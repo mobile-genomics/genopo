@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Genopo - Mobile-Genomics</title>
+	<meta name="description" content="Website for Genopo mobile-genomics">
+	<meta name="author" content="Anjana Senanayake">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+
+	<!-- Loading third party fonts -->
+	<!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700|" rel="stylesheet" type="text/css"> -->
+	<link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<!-- Loading main css file -->
+	<link rel="stylesheet" href="style.css">
+
+	<link rel="shortcut icon" href="images/f5n-logo-50dp.png">
+
+</head>
+
+
+<body>
+	<div class="site-content">
+		<header class="site-header">
+			<div class="container">
+				<a href="index.html" class="logo"><img src="images/f5n-logo-50dp.png" alt="Genopo"></a>
+
+				<div class="main-navigation">
+					<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+					<ul class="menu">
+						<li class="menu-item"><a href="index.html">Home</a></li>
+						<li class="menu-item"><a href="about.html">About</a></li>
+						<li class="menu-item current-menu-item"><a href="download.html">Download</a></li>
+						<li class="menu-item"><a href="contact.html">Contact</a></li>
+					</ul> <!-- .menu -->
+				</div> <!-- .main-navigation -->
+
+				<div class="mobile-navigation"></div>
+
+			</div>
+		</header> <!-- .site-header -->
+
+		<main class="main-content">
+			<div class="fullwidth-block">
+				<div class="container">
+					<h2 class="section-title large">Download & install the application</h2>
+					<p class="leading">This is the developer guide to download and install the application.</p>
+					<hr class="spacer">
+					<div class="row">
+						<div class="col-md-5">
+							<img src="images/f5n-gome-screen.png" alt="iPhones">
+						</div>
+						<div class="col-md-7">
+							<hr class="spacer">
+							<p style="font-size: 120%;">
+								The below steps are for develpoers to install the APK. Please follow the
+								steps as it is. Even though these instructions can not harm the devices
+								you use, please follow the instructions at your own risk.
+							</p>
+
+							<ul class="app-stat" style="font-size: 120%;">
+								<li>Compatible Device: <i class="fa fa-android"></i></li>
+							</ul>
+
+							<ol>
+								<li style="font-size: 150%;">Find the CPU architecture of you android smart phone</li>
+								There are 3 main CPU architectures used in Android smartphones as of now.
+								<ul>
+									<li>arm64-v8a</li>
+									<li>armeabi-v7a</li>
+									<li>armeabi</li>
+								</ul>
+								Please refer<a
+									href="https://www.howtogeek.com/339665/how-to-find-your-android-devices-info-for-correct-apk-downloads/"> this page</a>
+								on more information to find your smartphones CPU architecture.
+								
+								<li style="font-size: 150%;">Download the corresponding APK</li>
+								Genopo supports armeabi-v7a, arm64-v8a only.
+								<ul>
+									<li><a href="https://github.com/SanojPunchihewa/f5n/releases/download/1.0.2/mobilegenomics-f5n-v1.0.2-arm64-v8a-release.apk">arm64-v8a APK</a></li>
+									<li><a href="https://github.com/SanojPunchihewa/f5n/releases/download/1.0.2/mobilegenomics-f5n-v1.0.2-armeabi-v7a-release.apk">armeabi-v7a APK</a></li>
+								</ul>
+
+								<li style="font-size: 150%;">Enable developer options and USB debugging</li>
+								You may need to enable on developer options and USB debugging in the smartphone to install the downloaded APK.
+								Refer <a href="https://developer.android.com/studio/debug/dev-options">this page</a> on how to enable these.
+
+								<li style="font-size: 150%;">Install</li>
+								Once all above steps are completed, now click the downloaded APK and start installing.
+								If failed please revise above steps again.
+							</ol>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</main> <!-- .main-content -->
+
+		<footer class="site-footer">
+			<div class="container">
+				<div class="social-links">
+					<a href="https://github.com/SanojPunchihewa/f5n"><i class="fa fa-github"></i></a>
+					<a href="mailto:hiruna72@gmail.com?subject = Feedback&body = Message"><i
+							class="fa fa-envelope"></i></a>
+				</div>
+
+				<div class="colophon">
+					<p>Copyright 2020 Genopo - Mobile Genomics</p>
+				</div>
+			</div>
+		</footer> <!-- .site-footer -->
+
+	</div>
+
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/plugins.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>
