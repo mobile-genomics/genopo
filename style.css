@@ -1455,15 +1455,27 @@ hr.spacer {
 /* Sidebar */
 
 #sidebar {
-	float:left;
-	text-align:left;
+  float:left;
+  text-align:left;
   width:400px;
-  height: 9000px;
-	padding:10px;
-	background-image:url(images/bg-sidebar.gif);
-	border:1px solid #efefef;
-	color:#666666;
-	}
+  height: 12020px;
+  padding:10px;
+  background-image:url(images/bg-sidebar.gif);
+  border:1px solid #efefef;
+  color:#666666;
+}
+@media screen and (max-width: 990px) {
+  #sidebar {
+    float:left;
+    text-align:left;
+    width:400px;
+    height: 720px;
+    padding:10px;
+    background-image:url(images/bg-sidebar.gif);
+    border:1px solid #efefef;
+    color:#666666;
+    }
+}
 
 #sidebar ul {
 	list-style-type:none;
