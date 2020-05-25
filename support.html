@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Genopo - Mobile-Genomics</title>
+    <meta name="description" content="Website for Genopo mobile-genomics">
+    <meta name="author" content="Anjana Senanayake">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+
+    <!-- Loading third party fonts -->
+    <!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700|" rel="stylesheet" type="text/css"> -->
+    <link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Loading main css file -->
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="shortcut icon" href="images/f5n-logo-50dp.png">
+
+</head>
+
+
+<body>
+    <div class="site-content">
+        <header class="site-header">
+            <div class="container">
+                <a href="index.html" class="logo"><img src="images/f5n-logo-50dp.png" alt="Genopo"></a>
+
+                <div class="main-navigation">
+                    <button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+                    <ul class="menu">
+                        <li class="menu-item"><a href="index.html">Home</a></li>
+                        <li class="menu-item"><a href="about.html">About</a></li>
+                        <li class="menu-item"><a href="download.html">Download</a></li>
+                        <li class="menu-item current-menu-item"><a href="support.html">Supplemenatary</a></li>
+                        <li class="menu-item"><a href="contact.html">Contact</a></li>
+                    </ul> <!-- .menu -->
+                </div> <!-- .main-navigation -->
+
+                <div class="mobile-navigation"></div>
+
+            </div>
+        </header> <!-- .site-header -->
+
+        <div>
+            <div id="sidebar">
+                <h2>Contents</h2>
+                <ol>
+                    <li>
+                        <a href="#partI">
+                            ADJUSTING MEMORY GOVERNING PARAMETERS OF THE TOOLS
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#partII">
+                            RECONSTRUCTING SEQUENCE ANALYSIS TOOLS FOR ARM/ANDROID
+                        </a>
+                        <ol>
+                            <li style="list-style-type:upper-latin;"><a href="#partIIA">Introduction and
+                                    prerequisites</a></li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIIB">Native compiling an analysis
+                                    tool</a></li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIIC">Determining third party
+                                    libraries used by an analysis tool</a></li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIID">Designing JNI interface</a></li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIIE">Cross-compiling an analysis
+                                    tool</a></li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIIF">Dynamic object construction in
+                                    Java side</a></li>
+                        </ol>
+                    </li>
+                    <li>
+                        <a href="#partIII">
+                            INTEGRATING A NEW ANALYSIS TOOL TO F5N
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#partIV">
+                            Advanced details
+                        </a>
+                        <ol>
+                            <li style="list-style-type:upper-latin;"><a href="#partIVA">Battery power consumption</a>
+                            </li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIVB">Recover F5N after crashing</a>
+                            </li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIVC">Interrupting an executing
+                                    pipeline</a></li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIVD">F5N storage and compatible file
+                                    systems</a></li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIVE">Including a new analysis
+                                    tool</a></li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIVF">Creating a custom pipeline</a>
+                            </li>
+                            <li style="list-style-type:upper-latin;"><a href="#partIVG">Running any sub-tool available
+                                    in an analysis tool</a></li>
+                        </ol>
+                    </li>
+                    <li>
+                        <a href="#references">
+                            References
+                        </a>
+                    </li>
+                </ol>
+            </div>
+
+            <div style="margin-left: 405px; padding: 25px;">
+                <h2>Supplementary Materials</h2>
+                <section id="partI">
+                    <h3>I. ADJUSTING MEMORY GOVERNING PARAMETERS OF THE TOOLS</h3>
+                    <p>
+                        The following steps can reduce peak RAM usage, to run F5N on a broad spectrum of mobile
+                        devices.
+                        For more
+                        details visit Minimap2 man page<a href="#ref1">[1]</a>, Samtools man page<a href="#ref2">[2]</a>
+                        and F5C man page<a href="#ref3">[3]</a>.
+                        <ol style="margin-left: 20px;">
+
+                            <li> Increase the number of partitions the genome reference is split into, to reduce
+                                peak
+                                RAM
+                                usage in Minimap2 alignment
+                            </li>
+                            <li> In Minimap2 alignment reduce the parameter value, number of bases loaded into
+                                memory to
+                                process in a mini-batch [-K]
+                            </li>
+                            <li> In Samtools sort reduce the parameter value, the maximum required memory per
+                                thread
+                                [-m]
+                            </li>
+                            <li> In F5C call methylation reduce the parameter value, batch size (max number of
+                                reads
+                                loaded
+                                at once</li>
+                            <li> In F5C call methylation reduce the parameter value, max number of bases loaded
+                                at
+                                once
+                                [-B]
+                            </li>
+                            <li> In F5C call methylation skip ultra long reads by setting the option
+                                [–skip-ultra
+                                FILE]
+                            </li>
+                            <li> In F5C call methylation reduce the threshold value to skip ultra long reads
+                                [–ultra-thresh
+                                INT]</li>
+                        </ol>
+                    </p>
+                </section>
+                <section id="partII">
+                    <h3>II. RECONSTRUCTING SEQUENCE ANALYSIS TOOLS FOR ARM/ANDROID</h3>
+                    <figure>
+                        <img src="images/supplementary_fig_1.JPG">
+                        <figcaption style="font-size: small; text-align: center;">Fig. S1. Cross-compiling work
+                            flow
+                            and JNI interface
+                            design involved in
+                            including a
+                            new sequence analyis tool to F5N</figcaption>
+                    </figure><br>
+                    <h4 id="partIIA">Introduction and prerequisites</h4>
+                    <p>
+                        This section provides fundamental guidelines on how to compile an analysis tool written
+                        in
+                        C/C++ for Android.
+                        Except for a few essential amendments (discussed below), our approach does not alter the
+                        original C/C++ code,
+                        which permits straightforward integration of new C/C++ analysis tools into F5N.
+                        Having some prior experience with Android SDK (Software Development Kit), Android
+                        Studio<a href="#ref4">[4]</a>,
+                        NDK (Native
+                        Development Kit) <a href="#ref5">[5]</a>, Java Native Interface (JNI)<a href="#ref6">[6]</a>,
+                        ADB (Android Debug Bridge)<a href="#ref7">[7]</a>, CMake
+                        build manager<a href="#ref8">[8]</a>
+                        and Ninja build system<a href="#ref9">[9]</a> certainly helps someone who is interested
+                        in
+                        rebuilding F5N or
+                        extending it with new
+                        tools.
+                    </p>
+                    <h4 id="partIIB">Native compiling an analysis tool</h4>
+                    <p>
+                        In our case, the fact that all the necessary tools (Minimap2, Samtools and F5C) were
+                        written
+                        in C/C++ let us
+                        to follow the same approach to compile them for Android. The approach can be summarized
+                        as
+                        shown in Fig. S1.
+                        3
+                        Before starting the compilation we tested the tools using Termux (a terminal emulator
+                        with
+                        Linux environment for
+                        Android)<a href="#ref10">[10]</a>. In Termux, the tools’ git repositories were cloned and
+                        built as instructed on
+                        the respective installation
+                        guides. This method can be known as native compiling. If a tool gets natively compiled
+                        in
+                        Termux, we can reasonably
+                        expect the tool to get cross-compiled for Android. There are two major Instruction Set
+                        Architectures (ISA) for
+                        ARM mobile devices called armeabi-v7a and arm64-v8a. Termux was installed on multiple
+                        devices with different
+                        architectures to make sure that the tools can be natively compiled in both the
+                        architectures. It is noteworthy that in
+                        Termux, the executable versions (.exe format) of the tools were built in contrast to
+                        their
+                        dynamic library versions (.so
+                        format). To build an Android application, the dynamic version of an original tool is
+                        required<a href="#ref11">[11]</a>. All the Android
+                        applications are a subset of Java programs and the gateway to the native (C/C++) code is
+                        obtained by loading the
+                        dynamic version of the native tool. To obtain a dynamic version of the tool (.so
+                        format), we
+                        can change the build
+                        configuration and natively compile in Termux. However, this method is not encouraged as
+                        it
+                        can impose device based
+                        restrictions on .so files which can result in intensive and costly debugging. The
+                        recommended method to obtain the
+                        dynamic version of a tool is to cross-compile using the Android Tool-chain<a
+                            href="#ref12">[12]</a>. This
+                        eliminates the burden associated
+                        with native compiling and simplifies the process of updating the tools to their latest
+                        versions. This in return automates
+                        continuous integration and delivery. In <a href="#partIIE">Suppliementary Sections
+                            II-E</a>
+                        and <a href="#partIII">III</a> we provide
+                        further details on how to
+                        cross-compile.
+                    </p>
+                    <h4 id="partIIC">Determining third party libraries used by an analysis tool</h4>
+                    <p>
+                        It is necessary to determine the third party libraries used by the analysis tools
+                        (Minimap2,
+                        Samtools and F5C).
+                        A tool to function correctly, associated third party libraries should also be linked
+                        statically or dynamically with the
+                        tool, i.e., third party libraries should also be cross-compiled. Samtools depends on
+                        htslib
+                        <a href="#ref13">[13]</a> library. F5C depends
+                        on both htslib and HDF5 <a href="#ref14">[14]</a> libraries. Hdf5 library is used to
+                        handle
+                        fast5 files and there
+                        exists no straightforward
+                        method to cross compile hdf5. Hence we used native compiled instances of HDF5 library
+                        (the
+                        instances that were
+                        built using Termux). We maintained two instances of HDF5, one for each Architecture
+                        (armeabi-v7a and arm64-v8a).
+                        These third party libraries were statically linked to respective shared libraries. If a
+                        third party library is being used
+                        by two dependent tools, make sure to link a dynamic version of the library. For an
+                        example
+                        in our case, htslib was
+                        used by Samtools and F5C. Trying to statically link htslib separately to each tool,
+                        caused
+                        the software to crash on
+                        some devices. This was resolved by linking htslib dynamically.
+                    </p>
+                    <h4 id="partIID">Designing JNI interface</h4>
+                    <p>
+                        JNI acts as the bridge between native (C/C++) methods and Java function calls. In JNI
+                        interface, each tool’s int
+                        main(int argc, char* argv[]) function was called. The function name, int main(int argc,
+                        char* argv[]) was renamed
+                        as int init X(int argc, char* argv[]) where X was Minimap2,Samtools or F5C. This
+                        function
+                        renaming is necessary
+                        as the tools are not stand-alone executable applications but dynamic libraries.
+                        Moreover, a
+                        header file was introduced
+                        for each tool that contained the function signature
+                        <code>int init X(int argc, char* argv[])</code>.
+                        JNI
+                        interface was extended to
+                        facilitate the following,
+                        <ol style="margin-left: 20px;">
+                            <li>Handle exit signals returned by native code</li>
+                            <li>Handle SIGSEGV signals returned by native code.</li>
+                            <li>Raise exceptions on behalf of the native functions.</li>
+                            <li>Reset argv variable before calling another native function <code>[int init X(int argc,
+                                char* argv[])]</code>.</li>
+                            <li>A tunnel between the native code and the Java program to communicate standard
+                                error
+                                messages.</li>
+                            <li>If original code does not define an output file path argument, redirect standard
+                                ouput to a file.</li>
+                        </ol><br>
+                        It is important to handle different types of signals and errors thrown by the native code to
+                        prevent JVM from
+                        crashing. For example the original code most probably will exit with an error if something
+                        goes wrong. This kills
+                        the JVM if not handled. We want to keep the JVM running throughout a F5N session. In order
+                        to do that, the exit
+                        call should be caught and handled in JNI <a href="#ref15">[15]</a>. In a similar manner,
+                        SIGSEGV signals should
+                        be handled safely
+                        <a href="#ref16">[16]</a>. Once an exit call or SIGSEGV signal is handled this should be
+                        informed to Java program
+                        so that the user can
+                        investigate the problem. To do this, exceptions are thrown from JNI to Java <a
+                            href="#ref17">[17]</a>.
+                        The original C/C++ tools take input as command line arguments. When a pipeline with more
+                        than one step is
+                        executed, the native code attempts to read the same argument vector multiple times. If the
+                        argument vector is not reset
+                        after the completion of the first step, arguments do not get parsed in the second step as
+                        desired. This resetting part
+                        4
+                        is not implemented in most of the original libraries. In JNI this should be implemented to
+                        avoid failures associated
+                        with arguments parsing <a href="#ref18">[18]</a>.
+                    </p>
+                    <figure id="figure2">
+                        <img src="images/supplementary_fig_2.JPG">
+                        <figcaption style="font-size: small; text-align: center;">Fig. S2. Method I - Using a file
+                            pipe to listen and save standard output. Method II - Define a new command line argument
+                            for output file
+                            path. Method III - Using NDK Logging functions to print standard error to Logcat. Method
+                            IV - Using a file pipe to listen standard error.</figcaption>
+                    </figure>
+                    <br>
+                    <p>
+                        Typically a tool writes the results to the standard ouput and meta-information to the
+                        standard error. On Android,
+                        we want the results to be written to a file and meta-information to be displayed on a GUI in
+                        real-time. To write
+                        results to a file, most of the tools provide a command line argument called file output
+                        path. Otherwise, in terminal
+                        environments like in Linux, we can redirect the standard output to a file (using the output
+                        redirection operator ‘>’).
+                        On Android, this is not possible. To overcome this issue two methods can be adopted. The
+                        first is to open up a
+                        file pipe in JNI to listen to the standard ouput, where the results will get written to this
+                        file <a href="#figure2">(Fig. S2 Method I)</a>.
+                        The second is to define the output file path as an argument in the original code <a
+                            href="#figure2">(Fig. S2 Method II)</a>. However, all
+                        the libraries in F5N had output file path as an argument. Now we present two methods to
+                        catch the standard error,
+                        which should be displayed to the user in real-time. The first method is to replace all the
+                        fprintf(stderr,...) functions
+                        with functions defined in NDK logging <a href="#ref19">[19]</a>. Then the standard error
+                        will get written to
+                        Android Logcat <a href="#ref20">[20]</a>. From
+                        Android Logcat, it is again piped to be displayed <a href="#figure2">(Fig. S2 Method
+                            III)</a>. In practice, this
+                        method does not guarantee
+                        to display the complete set of messages written to the standard error during an execution.
+                        The more robust method
+                        is to open a file descriptor to listen to the standard error. Then this file should be read
+                        in Java side and the GUI
+                        should be updated <a href="#figure2">(Fig. S2 Method IV)</a>. This involves no amendments in
+                        the original libraries
+                        but a declaration of
+                        file descriptors in JNI code.
+                    </p>
+                    <h4 id="partIIE">Cross-compiling an analysis tool</h4>
+                    <p>
+                        To facilitate the modifications discussed above, the original repositories of the tools were
+                        forked and changed.
+                        Different tools use different build configurations. The build scripts for each tool were
+                        re-written using CMake.
+                        Suppose an original tool is built with GNU Make using a Makefile. In that case, one has to
+                        extract the source files,
+                        header files, compiler flags, linked libraries etc to create a CMakeLists.txt file. Refer
+                        how a CMakeLists.txt was written
+                        for htslib <a href="#ref20">[21]</a>. CMake along with Ninja is the recommended native build
+                        setup for Android.
+                        Compiling with CMake
+                        allows ADB to go deep into the native code when debugging. This was really helpful to figure
+                        out the static/dynamic
+                        version issue related to htslib library. It was straightforward to link the necessary third
+                        party libraries(HDF5 and
+                        htslib) and system libraries (libz, liblog, libm etc) with original libraries using CMake.
+                        To follow the full set of
+                        modifications please refer Minimap2 <a href="#ref20">[22]</a> Samtools <a href="#ref20">[23]</a>
+                        and F5C <a href="#ref20">[24]</a>. One can build libraries
+                        without using CMake
+                        but by using already available Standalone Toolchains<a href="#ref20">[25]</a>. However, this
+                        eliminates the
+                        possibility to debug using
+                        ADB.
+                    </p>
+                    <h4 id="partIIF">Dynamic object construction in Java side</h4>
+                    <p>
+                        The part of F5N written in Java is dynamic and adaptive. For example the arguments set for
+                        each tool is stored in
+                        JSON format and objects are created by converting JSON objects to Java objects. In this way,
+                        F5N and arguments
+                        are decoupled making it easy to alter the format of the arguments if needed. The widgets
+                        linked with arguments are
+                        drawn programmatically instead of manually drawing them on the layout. This makes it easy to
+                        extend F5N with
+                        new analysis tools <a href="#partIII">(refer Supplementary Section III)</a>.
+                    </p>
+                </section>
+                <section id="partIII">
+                    <h3>III. INTEGRATING A NEW ANALYSIS TOOL TO F5N</h3>
+                    <p>
+                        The following steps summarize the work flow to add a new DNA analysis tool written in C/C++ to
+                        F5N. Please refer
+                        <a href="#figure3">Fig. S3</a> for F5N directory structure. F5N repository is available at
+                        <a href="https://github.com/SanojPunchihewa/f5n">https://github.com/SanojPunchihewa/f5n</a>
+                    </p>
+                    <figure id="figure3">
+                        <img src="images/supplementary_fig_3.JPG">
+                        <figcaption style="font-size: small; text-align: center;">Fig. S3. F5N project directory
+                            structure, only the important folders are shown. The directory cpp contains CMakeLists.txt
+                            and interface X.h
+                            header files. The .so files are stored according their ISA inside jniLibs directory. The
+                            Java Class PipelineStep is inside directory core.</figcaption>
+                    </figure>
+                    <br>
+                    <p>
+                        <ol style="margin-left: 20px;">
+                            <li> Identify third party libraries that the new tool depends on. e.g. Samtools depends on
+                                htslib.
+                            </li>
+                            <li> Create dynamic versions of third party libraries if they are used by other analysis
+                                tools
+                                in F5N.
+                            </li>
+                            <li> Create static versions of third party libraries if they are not used by other analysis
+                                tools in F5N.
+                            </li>
+                            <li> Cross compile the new tool and link it with static third party libraries to create a
+                                dynamic library.
+                            </li>
+                            <li> Place all the dynamic libraries in jniLibs/[ANDROID ABI] directory.
+                            </li>
+                            <li> Repeat the above steps for different ANDROID ABIs. (armeabi-v7a and arm64-v8a)</li>
+                            <li> Change CMakeLists.txt file in cpp directory to include dynamic third party
+                                dependencies.
+                                <ul style="margin-left: 40px;">
+                                    <li><code>Add library(libnewdependency SHARED IMPORTED)</code></li>
+                                    <li><code>Set target properties(libnewdependency PROPERTIES IMPORTED LOCATION
+                                        CMAKE SOURCE DIR/../jniLibs/$ANDROID ABI/libnewdependency.so)</code></li>
+                                </ul>
+                            </li>
+                            <li> Change CMakeLists.txt to include the new analysis library
+                                <ul style="margin-left: 40px;">
+                                    <li><code>Add library(libnew SHARED IMPORTED)</code></li>
+                                    <li><code>Set target properties(libnew PROPERTIES IMPORTED LOCATION
+                                        CMAKE SOURCE DIR/../jniLibs/$ANDROID ABI/libnew.so)</code>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li> Change CMakeLists.txt file to link the new analysis library. Refer Supplemenatary
+                                Section IV-E for more
+                                details.
+                                <ul style="margin-left: 40px;">
+                                    <li><code>target link libraries(native-lib libminimap libsamtool libf5c
+                                        libhts libnew libnewdependency1 libnewdependency2 ... $log-lib)</code></li>
+                                </ul>
+                            </li>
+                            <li>
+                                Copy interface X.h file with the function signature
+                                <code>init X(int argc, char* argv[])</code> to
+                                cpp directory (X is the
+                                name of the new library).
+                            </li>
+                            <li> Create PipelineStep objects in PipelineStep Class located in core directory for the
+                                sub-tools (commands) in
+                                the new analysis tool.
+                                <ul style="margin-left: 40px;">
+                                    <li>new PipelineStep(COMMAND ID, NEW TOOL NAME, "tool name subtool name(command)");
+                                        <br>ex: <code>static final PipelineStep f5cIndex = new PipelineStep(3,
+                                                "F5C INDEX", "f5c index");</code> </li>
+                                </ul>
+                            </li>
+                            <li> For each sub-tool (command) create a JSON file containing the list of arguments and
+                                their default values<a href="#ref26">[26]</a></li>
+                            <li> Link JSON files to the configureArguments method in GUIConfiguration Class located
+                                inside java/com/mobilegenomics/f5n directory, i.e. add new switch cases to match NEW SUB
+                                TOOLs and assign JSON files appropriately.
+                            </li>
+                            <li> Import interface X.h header file to native-lib.cpp source file located inside cpp
+                                directory
+                                <ul style="margin-left: 40px;">
+                                    <li><code>include "#interface X.h"</code></li>
+                                </ul>
+                            </li>
+                            <li> Follow a similar approach to other tools to call
+                                <code>init X(int argc, char* argv[])</code>
+                                function in native-lib.cpp source
+                                file.
+                            </li>
+                        </ol><br>
+                        Moreover, the following list comprises of common mistakes that could happen when extending or
+                        rebuilding F5N.
+                        Please refer <a href="#partII">Supplementary Section II</a> for details.
+                        <br><br>
+                        <ol style="margin-left: 20px;">
+                            <li> Overlooking compiler flags when creating a CMake build configuration. e.g. not
+                                including
+                                the compiler flag <code>-D FILE OFFSET BITS=64</code> in Minimap2 CMake build
+                                will result in file read failures.
+                            </li>
+                            <li> Statically linking third party libraries that are used by more than one tool. e.g.
+                                Linking
+                                the static version of htslib library caused Samtools and F5C to fail.
+                            </li>
+                            <li> Not Handling native exceptions in JNI interface
+                            </li>
+                            <li> Not Handling native SIGSEGV signals and exit signals in JNI interface
+                            </li>
+                            <li> Not Resetting command line argument vector before calling a new native function</li>
+                        </ol>
+                    </p>
+                </section>
+                <section id="partIV">
+                    <h3>IV. ADVANCED DETAILS</h3>
+                    <h4 id="partIVA">Battery power consumption</h4>
+                    <p>
+                        F5N is not built as an Android background process. That is because when processing a dataset,
+                        F5N may consume
+                        memory more than the recommended amount for a background process. Android kills such over memory
+                        consuming
+                        background processes. Hence, F5N is built as a regular Android application. However, this
+                        introduced a caveat.
+                        That is when running a pipeline, the device display should be kept on. That is because Android
+                        interrupts running
+                        applications once the display goes off. Hence, F5N has to keep the display on and this increases
+                        power consumption.
+                        Our workaround is to reduce the display brightness to its minimal value, once a pipeline
+                        execution starts. With this
+                        method, device B’s battery (3060 mAh) drains approximately by 214.2 mAh for a complete
+                        methylation calling
+                        pipeline on a batch data-set (∼34.49 Mbases on average).
+                    </p>
+                    <h4 id="partIVB">Recover F5N after crashing</h4>
+                    <p>
+                        Android tends to kill a process or destroy an activity if something goes wrong. In F5N usually
+                        it is the case when
+                        the native code tries to over consume memory. Since this kill signal comes from the Android
+                        Kernel, it cannot be
+                        handled. The simple solution is to be aware of the device memory and set memory governing
+                        parameters accordingly
+                        <a href="#partI">(see Supplementary Section I)</a>. Saving the state of the application, i.e,
+                        saving previously
+                        executed command and
+                        loading it later, saves time time taken to configure the pipeline again. In the next attempt,
+                        the user is advised to
+                        tweak memory parameters as it is the solution most of the time.
+
+                    </p>
+                    <h4 id="partIVC">Interrupting an executing pipeline</h4>
+                    <p>
+                        Already executing native code on Android cannot be stopped arbitrarily. The ramification of this
+                        is that the user
+                        cannot suspend or stop an executing pipeline. On the other hand, JVM being a multi-threaded
+                        process and JNI calls
+                        not being POSIX async-signal-safe, it is not possible to run the native code in a cloned
+                        process. As a consequence
+                        peak RAM usage will record the highest RAM usage for the whole application session rather than
+                        for the latest
+                        pipeline execution. To circumvent both problems the ”safest” solution is to restart F5N. An
+                        advanced method to
+                        suspend or stop an executing command is by adding interrupt listeners to the original code. That
+                        is while the original
+                        code is being executed, it periodically checks its environment for an interrupt signal, e.g,
+                        state of a flag value in a file.
+                        The flag value can be changed on-the-fly to stop or suspend the execution. Please note that in
+                        F5N, when a pipeline
+                        is running the user can still go to the previous activity. In such attempts, a warning message
+                        is displayed saying that
+                        the pipeline will stop. This does not guarantee the complete termination of the native process
+                        but the termination of
+                        the running Java thread. Hence, the user is advised to restart the application to safely
+                        terminate a pipeline.
+                    </p>
+                    <h4 id="partIVD">F5N storage and compatible file systems</h4>
+                    <p>
+                        A mobile phone has two storage types - internal storage and external storage (SD card storage).
+                        FAT32 is a popular
+                        file system format used in SD cards. However, FAT32 does not support files with more than the
+                        size of ∼4GB. Usually,
+                        the partitioned genome reference file exceeds the size 4GB. Therefore, the user is advised to
+                        use file system formats
+                        like ext3, ext4, exFAT32 etc as the SD card file system format. Out of these formats, exFAT32 is
+                        recommended. It is
+                        noteworthy that Google has introduced (from Android 8.0) a virtual file system wrapper called
+                        SDCardFS to regulate
+                        SD card access by Android applications. However, still, the SD card should have one of the
+                        compatible file system
+                        formats to work with larger files.
+                        Downloading and extracting a dataset to the SD card can be done after setting SD card
+                        permission. On Android,
+                        writing to the SD card storage via native code (C/C++) can only be done using Storage Access
+                        Framework (SAF)<a href="#ref27">[27]</a>.
+                        To implement SAF, most of the original code has to be changed. One workaround is to use the
+                        Method I as illustrated
+                        in <a href="#figure2">Fig. S2</a>. In JNI interface, we can use SAF to write the standard output
+                        to the SD card.
+                        However, there are sub-tools
+                        that directly write to files, e.g., F5C index writes files automatically to the dataset
+                        directory. In such scenarios, the
+                        original tool should be reconfigured to facilitate SAF. The current version of F5N does not
+                        support this feature.
+                        Therefore the user cannot perform writes to the SD card but can read from it.
+
+                    </p>
+                    <h4 id="partIVE">Including a new analysis tool</h4>
+                    <p>
+                        The <a href="#partIII">Supplementary Section III</a> explains the procedure to include a new
+                        analysis tool in F5N.
+                        However if the new
+                        tool creates a comparatively large .so file, instead of directly linking it with the existing
+                        .so files (step 14), it can be
+                        kept as a separate .so file which can be loaded to JVM as required. Nanopolish’s .so file is ∼50
+                        MB while the sum
+                        of the other .so files is ∼17 MB. Hence, we separated out Nanopolish’s .so file and it is loaded
+                        to F5N only if the
+                        user set the pipeline type to “Mode 2” inside F5N settings (add screenshot). Every time the user
+                        switches between
+                        pipeline types - “Mode 1” and “Mode 2”, F5N needs to be restarted for the changes to take
+                        effect. This is because
+                        the JVM has to unload the existing library and load a new one. Please note that, in both
+                        pipeline types Minimap2
+                        and Samtools commands can be executed but F5C is only supported in “Mode 1 and Nanopolish is
+                        only supported
+                        in “Mode 2”
+                    </p>
+                    <h4 id="partIVF">Creating a custom pipeline</h4>
+                    <p>
+                        F5N source code can be modified to have user defined custom pipelines as necessary. F5N already
+                        consists of three
+                        such pipelines (methylation calling pipelline, event alignment pipeline and Artic pipeline). A
+                        developer can easily
+                        choose to create a desired pipeline from the available analysis tools or after adding necessary
+                        tools as explained in
+                        <a href="#partIII">Sections III</a> and <a href="#partIVE">IV-E</a>. Please refer <a
+                            href="#ref28">[28]</a> for an
+                        example custom pipeline source code.
+                    </p>
+                    <h4 id="partIVG">Running any sub-tool available in an analysis tool</h4>
+                    <p>
+                        F5N has only a limited number of sub-tools with a GUI. However, the user can use Terminal
+                        Activity page, to
+                        write a command, which uses any sub-tool of the selected analysis tool. For an example, in
+                        Samtools, though GUIs
+                        are provided only for Samtools sort and Samtools index, Samtools depth commmands can be
+                        configured in Terminal
+                        Activity page. If a developer likes to build a GUI for a sub-tool, he only has to create a JSON
+                        file as explained in
+                        <a href="#partIII">Section III</a> (steps 12 and 13).
+                    </p>
+                </section>
+                <section id="references">
+                    <h3>V. References</h3>
+                    <ol style="margin-left: 20px;">
+                        <li id=ref1><a href="https://lh3.github.io/minimap2/minimap2.html."> Heng Li. Manual
+                                Reference
+                                Pages - Minimap2 (1). </a></li>
+                        <li id=ref2><a href="http://www.htslib.org/doc/samtools.html."> Samtools. Manual page from
+                                samtools-1.10. </a></li>
+                        <li id=ref3><a href="https://hasindu2008.github.io/f5c/docs/overview."> Hasindu
+                                Gamaarachchi.
+                                Manual Reference Pages - F5C. </a></li>
+                        <li id=ref4><a href="https://developer.android.com/studio."> Android. Android Studio and
+                                SDK.
+                            </a></li>
+                        <li id=ref5><a href="https://developer.android.com/ndk."> Android. Android NDK. </a></li>
+                        <li id=ref6><a href="https://developer.android.com/training/articles/perf-jni."> Android.
+                                JNI.
+                            </a></li>
+                        <li id=ref7><a href="https://developer.android.com/studio/command-line/adb."> Android.
+                                Android
+                                Debug Bridge. </a></li>
+                        <li id=ref8><a href="https://cmake.org/."> Kitware. CMake build manager. </a></li>
+                        <li id=ref9><a href="https://ninja-build.org/."> Ninja. Ninja build system. </a></li>
+                        <li id=ref10><a href="https://play.google.com/store/apps/details?id=com."> Fredrik Fornwall.
+                                Termux Linux environment emulator. </a></li>
+                        <li id=ref11>Ian F Darwin. Android Cookbook: Problems and Solutions for Android Developers.
+                            ”
+                            O’Reilly
+                            Media, Inc.”,
+                            2017, ”661–666”.
+                        </li>
+                        <li id=ref12><a href="https://developer.android.com/ndk/guides/cmake."> Android. Android
+                                Cmake
+                                cross-compilation. </a></li>
+                        <li id=ref13><a href="https://github.com/samtools/htslib."> samtools. htslib. </a></li>
+                        <li id=ref13>Mike Folk, Albert Cheng, and Kim Yates. “HDF5: A file format and I/O library
+                            for
+                            high performance computing
+                            applications”. In: Proceedings of supercomputing. Vol. 99. 1999, pp. 5–33
+                        </li>
+                        <li id=ref15><a href="http://jnicookbook.owsiak.org/recipe-no-016/."> JNI handle exit calls.
+                            </a></li>
+                        <li id=ref16><a href="http://jnicookbook.owsiak.org/recipe-no-015/."> JNI handle SIGSEGV
+                                calls.
+                            </a></li>
+                        <li id=ref17><a href="http://jnicookbook.owsiak.org/recipe-no-019/."> JNI throw exceptions.
+                            </a>
+                        </li>
+                        <li id=ref18><a
+                                href="https://github.com/SanojPunchihewa/f5n/blob/master/app/src/main/cpp/native-lib.cpp.">
+                                Sanoj Punchihewa. F5N JNI interface. </a></li>
+                        <li id=ref19><a href="https://developer.android.com/ndk/reference/group/logging."> Android.
+                                Logging Android NDK. </a></li>
+                        <li id=ref20><a href="https://developer.android.com/studio/command-line/logcat."> Android.
+                                Logcat command-line tool. </a></li>
+                        <li id=ref21><a
+                                href="https://github.com/hiruna72/htslib/blob/76f9eaa29a23573a70e37ca6ed842719e03cde55/INSTALL#L101.">
+                                HTSLIB. CMake build for HTSLIB. </a></li>
+                        <li id=ref22><a
+                                href="https://github.com/SanojPunchihewa/minimap2-arm/tree/build-cmake#cmake-build.">
+                                Minimap2. CMake build for Minimap2. </a></li>
+                        <li id=ref23><a
+                                href="https://github.com/hiruna72/samtools/blob/947c5b66cf91abc9b3e58b61642994dd8f4ae7e4/INSTALL#L103.">
+                                Samtools. CMake build for Samtools. </a></li>
+                        <li id=ref24><a href="https://github.com/hiruna72/f5c/tree/cmake_build#building."> F5C.
+                                CMake
+                                build for F5C. </a></li>
+                        <li id=ref25><a href="https://developer.android.com/ndk/guides/standalone_toolchain.">
+                                Android.
+                                Standalone Toolchains (Obsolete). </a></li>
+                        <li id=ref26><a
+                                href="https://github.com/SanojPunchihewa/f5n/blob/master/app/src/main/res/raw/minimap2.json.">
+                                F5N. F5N arguments JSON format. </a></li>
+                        <li id=ref27><a
+                                href="https://developer.android.com/guide/topics/providers/document-provider.html.">
+                                Android. Open files using storage access framework. </a></li>
+                        <li id=ref28><a
+                                href="https://github.com/SanojPunchihewa/f5n/blob/master/app/src/main/java/com/mobilegenomics/f5n/core/PipelineStep.java.">
+                                F5N. Custom pipeline source code. </a></li>
+                    </ol>
+                </section>
+            </div>
+        </div>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="social-links">
+                    <a href="https://github.com/SanojPunchihewa/f5n"><i class="fa fa-github"></i></a>
+                    <a href="mailto:hiruna72@gmail.com?subject = Feedback&body = Message"><i
+                            class="fa fa-envelope"></i></a>
+                </div>
+
+                <div class="colophon">
+                    <p>Copyright 2020 Genopo - Mobile Genomics</p>
+                </div>
+            </div>
+        </footer> <!-- .site-footer -->
+
+    </div>
+
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

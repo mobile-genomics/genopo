@@ -1,104 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Genopo - Mobile-Genomics</title>
-		<meta name="description" content="Website for Genopo mobile-genomics">
-		<meta name="author" content="Anjana Senanayake">
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
 
-		<!-- Loading third party fonts -->
-		<!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700|" rel="stylesheet" type="text/css"> -->
-		<link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+<head>
+	<title>Genopo - Mobile-Genomics</title>
+	<meta name="description" content="Website for Genopo mobile-genomics">
+	<meta name="author" content="Anjana Senanayake">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
 
-		<!-- Loading main css file -->
-		<link rel="stylesheet" href="style.css">
+	<!-- Loading third party fonts -->
+	<!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700|" rel="stylesheet" type="text/css"> -->
+	<link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-		<link rel="shortcut icon" href="images/f5n-logo-50dp.png">
+	<!-- Loading main css file -->
+	<link rel="stylesheet" href="style.css">
 
-	</head>
+	<link rel="shortcut icon" href="images/f5n-logo-50dp.png">
+
+</head>
 
 
-	<body>
-		<div class="site-content">
-			<header class="site-header">
+<body>
+	<div class="site-content">
+		<header class="site-header">
+			<div class="container">
+				<a href="index.html" class="logo"><img src="images/f5n-logo-50dp.png" alt="Genopo"></a>
+
+				<div class="main-navigation">
+					<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+					<ul class="menu">
+						<li class="menu-item"><a href="index.html">Home</a></li>
+						<li class="menu-item"><a href="about.html">About</a></li>
+						<li class="menu-item"><a href="download.html">Download</a></li>
+						<li class="menu-item"><a href="support.html">Supplementary</a></li>
+						<li class="menu-item current-menu-item"><a href="contact.html">Contact</a></li>
+					</ul> <!-- .menu -->
+				</div> <!-- .main-navigation -->
+
+				<div class="mobile-navigation"></div>
+
+			</div>
+		</header> <!-- .site-header -->
+
+		<main class="main-content">
+			<div class="fullwidth-block">
 				<div class="container">
-					<a href="index.html" class="logo"><img src="images/f5n-logo-50dp.png" alt="Genopo"></a>
+					<h2 class="section-title large">Contact us</h2>
+					<p class="leading">Got any queries? We are happy to help!</p>
+					<hr class="spacer">
 
-					<div class="main-navigation">
-						<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
-						<ul class="menu">
-							<li class="menu-item"><a href="index.html">Home</a></li>
-							<li class="menu-item"><a href="about.html">About</a></li>
-							<li class="menu-item"><a href="download.html">Download</a></li>
-							<li class="menu-item current-menu-item"><a href="contact.html">Contact</a></li>
-						</ul> <!-- .menu -->
-					</div> <!-- .main-navigation -->
+					<div class="map" data-latitude="7.254670" data-longitude="80.591344"></div>
 
-					<div class="mobile-navigation"></div>
-					
-				</div>
-			</header> <!-- .site-header -->
-
-			<main class="main-content">
-				<div class="fullwidth-block">
-					<div class="container">
-						<h2 class="section-title large">Contact us</h2>
-						<p class="leading">Got any queries? We are happy to help!</p>
-						<hr class="spacer">
-
-						<div class="map" data-latitude="7.254670" data-longitude="80.591344" ></div>
-
-						<div class="row">
-							<div class="col-md-4">
-								<ul class="contact-details">
-									<li>
-										<img src="images/icon-sign.png" alt="" class="icon">
-										<address>
-											Department of Computer Engineering<br>
-											Faculty of Engineering<br>
-											University of Peradeniya<br>
-											Kandy<br>
-											Sri Lanka
-										</address>
-									</li>
-									<li>
-										<img src="images/icon-message.png" alt="" class="icon">
-										<a href="mailto:>mobilegenomics@gmail.com">mobilegenomics@gmail.com</a>
-									</li>
-									<li>
-										<img src="images/icon-phone.png" alt="" class="icon">
-										<a href="tel:(+94) 715715213">(+94) 715715213</a>
-									</li>
-								</ul>
-							</div>
+					<div class="row">
+						<div class="col-md-4">
+							<ul class="contact-details">
+								<li>
+									<img src="images/icon-sign.png" alt="" class="icon">
+									<address>
+										Department of Computer Engineering<br>
+										Faculty of Engineering<br>
+										University of Peradeniya<br>
+										Kandy<br>
+										Sri Lanka
+									</address>
+								</li>
+								<li>
+									<img src="images/icon-message.png" alt="" class="icon">
+									<a href="mailto:>mobilegenomics@gmail.com">mobilegenomics@gmail.com</a>
+								</li>
+								<li>
+									<img src="images/icon-phone.png" alt="" class="icon">
+									<a href="tel:(+94) 715715213">(+94) 715715213</a>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
-			</main> <!-- .main-content -->
+			</div>
+		</main> <!-- .main-content -->
 
-			<footer class="site-footer">
-					<div class="container">
-						<div class="social-links">
-							<a href="https://github.com/SanojPunchihewa/f5n"><i class="fa fa-github"></i></a>
-							<a href="mailto:hiruna72@gmail.com?subject = Feedback&body = Message"><i
-									class="fa fa-envelope"></i></a>
-						</div>
-		
-						<div class="colophon">
-							<p>Copyright 2020 Genopo - Mobile Genomics</p>
-						</div>
-					</div>
-				</footer> <!-- .site-footer -->
+		<footer class="site-footer">
+			<div class="container">
+				<div class="social-links">
+					<a href="https://github.com/SanojPunchihewa/f5n"><i class="fa fa-github"></i></a>
+					<a href="mailto:hiruna72@gmail.com?subject = Feedback&body = Message"><i
+							class="fa fa-envelope"></i></a>
+				</div>
 
-		</div>		
+				<div class="colophon">
+					<p>Copyright 2020 Genopo - Mobile Genomics</p>
+				</div>
+			</div>
+		</footer> <!-- .site-footer -->
 
-		<script src="js/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&amp;language=en"></script>
-		<script src="js/plugins.js"></script>
-		<script src="js/app.js"></script>
-		
-	</body>
+	</div>
+
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&amp;language=en"></script>
+	<script src="js/plugins.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
 
 </html>

@@ -1,0 +1,5 @@
+1) Overlooking compiler flags when creating a CMake build configuration. e.g. not including the compiler flag -D FILE OFFSET BITS=64 in Minimap2 CMake build will result in file read failures.
+2) Statically linking third party libraries that are used by more than one tool. e.g. Linking the static version of htslib library caused Samtools and F5C to fail.
+3) Not Handling native exceptions in JNI interface
+4) Not Handling native SIGSEGV signals and exit signals in JNI interface
+5) Not Resetting command line argument vector before calling a new native function
