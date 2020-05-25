@@ -1352,10 +1352,7 @@ input[type="submit"], input[type="reset"] {
     height: 0; }
   .feature-with-copy .feature-image {
     width: 270px;
-    height: 270px;
-    border: 7px solid white;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
+    height: 400px;
     overflow: hidden;
     float: left;
     margin-right: 130px; }
