@@ -1195,13 +1195,13 @@ input[type="submit"], input[type="reset"] {
   .site-header .mobile-navigation {
     clear: both;
     padding-top: 30px;
-    display: none; }
+    display: grid;}
     @media screen and (min-width: 991px) {
       .site-header .mobile-navigation {
         display: none !important; } }
     .site-header .mobile-navigation .menu {
       list-style: none;
-      background: #97c7bd; }
+      background: none; }
     .site-header .mobile-navigation .menu-item {
       padding: 10px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.4);
